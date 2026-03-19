@@ -8,7 +8,7 @@ import Logo from "./assets/Alpha - Pharma Logo (1).png";
 import Blackberry from "./assets/download__2_-removebg-preview (1).png";
 
 /* ===================== DATABASE ===================== */
-// Frontend link: this becomes your Vercel URL in production (used to generate QR destination links).
+// Frontend link: this becomes your Render frontend URL in production (used to generate QR destination links).
 const WEBSITE_URL = window.location.origin;
 
 const RAW_PRODUCTS = [
@@ -301,7 +301,7 @@ const verifyProduct = async (payload) => {
   setErrorMessage("");
   setStatus("loading");
   // Backend link: set this with VITE_API_URL in Vercel (example: https://your-api.onrender.com).
-  const API_URL = import.meta.env.VITE_API_URL || "https://product-verification-kkzm.onrender.com";
+  const API_URL = import.meta.env.VITE_API_URL || "https://productverification-xacn.onrender.com";
   const isQRVerification = !!payload?.token;
   const maxAttempts = isQRVerification ? 2 : 1;
   const timeoutMs = isQRVerification ? 25000 : 15000;

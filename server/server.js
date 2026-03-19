@@ -1,5 +1,6 @@
 // const express = require("express");
 import express from "express";
+import "dotenv/config";
 // const mongoose = require("mongoose");
 import mongoose from "mongoose";
 // const cors = require("cors");
@@ -9,11 +10,31 @@ import cors from "cors";
 import Product from "./Product.js";
 
 const app = express();
+const PORT = Number(process.env.PORT) || 5000;
+const MONGO_URI = process.env.MONGO_URI;
+const FRONTEND_URL = process.env.FRONTEND_URL;
 
-app.use(cors());
+if (!MONGO_URI) {
+	throw new Error("Missing MONGO_URI environment variable");
+}
+
+app.use(
+	cors(
+		FRONTEND_URL
+			? {
+					origin: FRONTEND_URL,
+					methods: ["GET", "POST", "OPTIONS"],
+				}
+			: undefined
+	)
+);
 app.use(express.json());
 
-mongoose.connect("mongodb+srv://HACK:giDCgxy2d3HiO7IE@hackethic.ozjloba.mongodb.net/product_verification?retryWrites=true&w=majority&appName=HACKETHIC")
+app.get("/health", (req, res) => {
+	res.status(200).json({ status: "ok" });
+});
+
+mongoose.connect(MONGO_URI)
 .then(()=>console.log("MongoDB connected"));
 
 /* ================= VERIFY ================= */
@@ -73,6 +94,6 @@ res.status(500).json({status:"error"});
 
 });
 
-app.listen(5000,()=>{
-console.log("Server running on port 5000");
+app.listen(PORT,()=>{
+console.log(`Server running on port ${PORT}`);
 });
